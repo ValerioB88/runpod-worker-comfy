@@ -1,63 +1,399 @@
 {
-  "input": {
-    "workflow": {
-      "3": {
-        "inputs": {
-          "seed": 234234,
-          "steps": 20,
-          "cfg": 8,
-          "sampler_name": "euler",
-          "scheduler": "normal",
-          "denoise": 1,
-          "model": ["4", 0],
-          "positive": ["6", 0],
-          "negative": ["7", 0],
-          "latent_image": ["5", 0]
-        },
-        "class_type": "KSampler"
-      },
-      "4": {
-        "inputs": {
-          "ckpt_name": "sd_xl_base_1.0.safetensors"
-        },
-        "class_type": "CheckpointLoaderSimple"
-      },
-      "5": {
-        "inputs": {
-          "width": 512,
-          "height": 512,
-          "batch_size": 1
-        },
-        "class_type": "EmptyLatentImage"
-      },
-      "6": {
-        "inputs": {
-          "text": "beautiful scenery nature glass bottle landscape, purple galaxy bottle,",
-          "clip": ["4", 1]
-        },
-        "class_type": "CLIPTextEncode"
-      },
-      "7": {
-        "inputs": {
-          "text": "text, watermark",
-          "clip": ["4", 1]
-        },
-        "class_type": "CLIPTextEncode"
-      },
-      "8": {
-        "inputs": {
-          "samples": ["3", 0],
-          "vae": ["4", 2]
-        },
-        "class_type": "VAEDecode"
-      },
-      "9": {
-        "inputs": {
-          "filename_prefix": "ComfyUI/test",
-          "images": ["8", 0]
-        },
-        "class_type": "SaveImage"
-      }
+  "295": {
+    "inputs": {
+      "seed": 10000,
+      "steps": 2,
+      "cfg": 2,
+      "sampler_name": "dpmpp_sde_gpu",
+      "scheduler": "normal",
+      "denoise": 0.9,
+      "preview_method": "auto",
+      "vae_decode": "true (tiled)",
+      "model": [
+        "338",
+        0
+      ],
+      "positive": [
+        "300",
+        0
+      ],
+      "negative": [
+        "301",
+        0
+      ],
+      "latent_image": [
+        "302",
+        0
+      ],
+      "optional_vae": [
+        "298",
+        2
+      ]
+    },
+    "class_type": "KSampler (Efficient)",
+    "_meta": {
+      "title": "KSampler (Efficient)"
+    }
+  },
+  "298": {
+    "inputs": {
+      "ckpt_name": "CyberRealisticPony_V65.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "299": {
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "298",
+        1
+      ]
+    },
+    "class_type": "CLIPSetLastLayer",
+    "_meta": {
+      "title": "CLIP Set Last Layer"
+    }
+  },
+  "300": {
+    "inputs": {
+      "text": "score_9, score_8_up, score_7_up,  (1girl:1.4),s (solo:2) young, sexy,\nsquare face,\n vibrant, dark, GREEN, chic cocktail dress with an off-the-shoulder neckline,Japanese garden with a pond, koi fish, elegant",
+      "clip": [
+        "299",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "301": {
+    "inputs": {
+      "text": "embedding:CyberRealistic_Negative_PONY-neg, naked",
+      "clip": [
+        "299",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "302": {
+    "inputs": {
+      "width": 832,
+      "height": 1216,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "304": {
+    "inputs": {
+      "text": "(photorealistic:1.2) (realistic:1.2), (max details:1.2), (photo:1.3) skin texture style, detailed skin pore, detailed skin, realistic skin, ",
+      "clip": [
+        "323",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "305": {
+    "inputs": {
+      "text": "",
+      "clip": [
+        "323",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+    }
+  },
+  "306": {
+    "inputs": {
+      "weight": 0.7000000000000001,
+      "weight_faceidv2": 2,
+      "weight_type": "linear",
+      "combine_embeds": "concat",
+      "start_at": 0.5,
+      "end_at": 1,
+      "embeds_scaling": "V only",
+      "model": [
+        "310",
+        0
+      ],
+      "ipadapter": [
+        "307",
+        0
+      ],
+      "clip_vision": [
+        "308",
+        0
+      ],
+      "insightface": [
+        "309",
+        0
+      ]
+    },
+    "class_type": "IPAdapterFaceID",
+    "_meta": {
+      "title": "IPAdapter FaceID"
+    }
+  },
+  "307": {
+    "inputs": {
+      "ipadapter_file": "ip-adapter-faceid-plusv2_sdxl.bin"
+    },
+    "class_type": "IPAdapterModelLoader",
+    "_meta": {
+      "title": "IPAdapter Model Loader"
+    }
+  },
+  "308": {
+    "inputs": {
+      "clip_name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors"
+    },
+    "class_type": "CLIPVisionLoader",
+    "_meta": {
+      "title": "Load CLIP Vision"
+    }
+  },
+  "309": {
+    "inputs": {
+      "provider": "CUDA",
+      "model_name": "buffalo_l"
+    },
+    "class_type": "IPAdapterInsightFaceLoader",
+    "_meta": {
+      "title": "IPAdapter InsightFace Loader"
+    }
+  },
+  "310": {
+    "inputs": {
+      "lora_name": "ip-adapter-faceid-plusv2_sdxl_lora.safetensors",
+      "strength_model": 0.8,
+      "model": [
+        "323",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "312": {
+    "inputs": {
+      "upscale_method": "nearest-exact",
+      "scale_by": 1.5,
+      "samples": [
+        "295",
+        3
+      ]
+    },
+    "class_type": "LatentUpscaleBy",
+    "_meta": {
+      "title": "Upscale Latent By"
+    }
+  },
+  "319": {
+    "inputs": {
+      "conditioning_1": [
+        "304",
+        0
+      ],
+      "conditioning_2": [
+        "295",
+        1
+      ]
+    },
+    "class_type": "ConditioningCombine",
+    "_meta": {
+      "title": "Conditioning (Combine)"
+    }
+  },
+  "320": {
+    "inputs": {
+      "seed": 10000,
+      "steps": 2,
+      "cfg": 2,
+      "sampler_name": "dpmpp_sde_gpu",
+      "scheduler": "karras",
+      "denoise": 0.5,
+      "preview_method": "auto",
+      "vae_decode": "true (tiled)",
+      "model": [
+        "340",
+        0
+      ],
+      "positive": [
+        "319",
+        0
+      ],
+      "negative": [
+        "295",
+        2
+      ],
+      "latent_image": [
+        "312",
+        0
+      ],
+      "optional_vae": [
+        "323",
+        2
+      ]
+    },
+    "class_type": "KSampler (Efficient)",
+    "_meta": {
+      "title": "KSampler (Efficient)"
+    }
+  },
+  "323": {
+    "inputs": {
+      "ckpt_name": "lustifySDXLNSFW_v20.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "329": {
+    "inputs": {
+      "number_of_faces": 1,
+      "scale_factor": 4.3,
+      "shift_factor": 0.45,
+      "start_index": 0,
+      "max_faces_per_image": 1,
+      "aspect_ratio": "1:1",
+      "image": [
+        "320",
+        5
+      ]
+    },
+    "class_type": "AutoCropFaces",
+    "_meta": {
+      "title": "Auto Crop Faces"
+    }
+  },
+  "335": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "320",
+        5
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "336": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "329",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "337": {
+    "inputs": {
+      "lora_name": "[Artstyle] SomethingWeird_Geekpower [PDXL].safetensors",
+      "strength_model": 1.9000000000000001,
+      "model": [
+        "298",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "338": {
+    "inputs": {
+      "lora_name": "oppai_v0.1-pony.safetensors",
+      "strength_model": 0,
+      "model": [
+        "337",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "339": {
+    "inputs": {
+      "lora_name": "sdxl_lightning_2step_lora.safetensors",
+      "strength_model": 0.2,
+      "model": [
+        "298",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "340": {
+    "inputs": {
+      "lora_name": "Fant5yP0ny.safetensors",
+      "strength_model": 0.2,
+      "model": [
+        "339",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "341": {
+    "inputs": {
+      "lora_name": "sdxl_lightning_2step_lora.safetensors",
+      "strength_model": 0.2,
+      "model": [
+        "306",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "342": {
+    "inputs": {
+      "lora_name": "skin texture style v4.safetensors",
+      "strength_model": 0.4,
+      "model": [
+        "341",
+        0
+      ]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
     }
   }
 }
