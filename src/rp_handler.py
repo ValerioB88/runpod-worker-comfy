@@ -273,6 +273,27 @@ def process_output_images(outputs, job_id):
         }
 
 
+def check_volume():
+    """
+    Check if /runpod-volume exists and log its contents.
+    """
+    volume_path = "/runpod-volume"
+    if os.path.exists(volume_path):
+        volume_contents = []
+        for root, dirs, files in os.walk(volume_path):
+            for name in files:
+                volume_contents.append(os.path.join(root, name))
+        return {
+            "exists": True,
+            "contents": volume_contents,
+        }
+    else:
+        return {
+            "exists": False,
+            "contents": [],
+        }
+
+
 def handler(job):
     """
     The main function that handles a job of generating an image.
@@ -296,7 +317,7 @@ def handler(job):
     # Extract validated data
     workflow = validated_data["workflow"]
     images = validated_data.get("images")
-
+    volume_debug_info = check_volume()
     # Make sure that the ComfyUI API is available
     check_server(
         f"http://{COMFY_HOST}",
@@ -333,14 +354,24 @@ def handler(job):
                 time.sleep(COMFY_POLLING_INTERVAL_MS / 1000)
                 retries += 1
         else:
-            return {"error": "Max retries reached while waiting for image generation"}
+            return {
+                "error": "Max retries reached while waiting for image generation",
+                "volume_debug_info": volume_debug_info,
+            }
     except Exception as e:
-        return {"error": f"Error waiting for image generation: {str(e)}"}
+        return {
+            "error": f"Error waiting for image generation: {str(e)}",
+            "volume_debug_info": volume_debug_info,
+        }
 
     # Get the generated image and return it as URL in an AWS bucket or as base64
     images_result = process_output_images(history[prompt_id].get("outputs"), job["id"])
 
-    result = {**images_result, "refresh_worker": REFRESH_WORKER}
+    result = {
+        **images_result,
+        "refresh_worker": REFRESH_WORKER,
+        "volume_debug_info": volume_debug_info,
+    }
 
     return result
 
