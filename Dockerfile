@@ -30,6 +30,12 @@ RUN git clone https://github.com/liusida/ComfyUI-AutoCropFaces.git
 RUN git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 RUN git clone https://github.com/cubiq/ComfyUI_essentials.git
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+### pip install requirements for impact-pact! I just did python install-manual.py within the custom_node/impact_pact
+WORKDIR /ComfyUI/custom_nodes/ComfyUI-Impact-Pack
+RUN python3 install-manual.py
+RUN wget -P 'ComfyUI/models/checkpoints/' 'https://huggingface.co/cyberdelia/CyberRealisticPony/resolve/main/CyberRealisticPony_V65.safetensors'
+
+# Downloading /ComfyUI/models/insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip
 
 WORKDIR /ComfyUI
 # Install ComfyUI dependencies
