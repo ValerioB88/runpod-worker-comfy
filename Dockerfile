@@ -1,6 +1,6 @@
 # Stage 1: Base image with common dependencies
 FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 as base
-
+# FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04 as base
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_PREFER_BINARY=1 \
@@ -29,12 +29,12 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /ComfyUI && \
     git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 
 # Install ComfyUI dependencies
-RUN pip3 install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cu121 && \
+RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
     pip3 install --no-cache-dir -r /ComfyUI/requirements.txt
 
 # Install additional dependencies
 RUN pip3 install --no-cache-dir runpod requests
-ADD src/extra_model_paths.yaml /ComfyUI
+# ADD src/extra_model_paths.yaml /ComfyUI
 # Add start scripts and handler
 ADD src/start.sh src/rp_handler.py /
 RUN chmod +x /start.sh
