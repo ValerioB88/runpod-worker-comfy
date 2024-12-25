@@ -34,7 +34,7 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
 
 # Install additional dependencies
 RUN pip3 install --no-cache-dir runpod requests
-# ADD src/extra_model_paths.yaml /ComfyUI
+ADD src/extra_model_paths.yaml /ComfyUI
 # Add start scripts and handler
 ADD src/start.sh src/rp_handler.py /
 RUN chmod +x /start.sh
@@ -72,8 +72,8 @@ RUN mkdir -p /ComfyUI/models/insightface/models/buffalo_l && \
     rm -rf /tmp/buffalo_l.zip
 
 # Download other models using get_models.sh
-COPY src/get_models.sh /get_models.sh
-RUN /bin/bash /get_models.sh && rm /get_models.sh
+# COPY src/get_models.sh /get_models.sh
+# RUN /bin/bash /get_models.sh && rm /get_models.sh
 
 # Final setup
 CMD ["/start.sh"]
