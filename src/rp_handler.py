@@ -167,7 +167,7 @@ def queue_workflow(workflow):
     """
 
     # The top level element "prompt" is required by ComfyUI
-    data = json.dumps({"prompt": workflow}).encode("utf-8")
+    data = json.dumps({"prompt": workflow, "client_id": 00}).encode("utf-8")
 
     req = urllib.request.Request(f"http://{COMFY_HOST}/prompt", data=data)
     return json.loads(urllib.request.urlopen(req).read())
