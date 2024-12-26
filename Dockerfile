@@ -58,9 +58,9 @@ FROM base as downloader
 #     ultralytics \
 #     "insightface==0.7.3" \
 #     onnxruntime
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     ffmpeg libsm6 libxext6 && \
-#     apt-get clean -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg libsm6 libxext6 && \
+    apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Run manual installation script for Impact Pack
 # WORKDIR /ComfyUI/custom_nodes/ComfyUI-Impact-Pack
