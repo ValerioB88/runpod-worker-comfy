@@ -1,4 +1,4 @@
-# Stage 1: Base image with common dependencies
+# Stage 1: Base image with common dependencies # 
 FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04 as base
 # FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04 as base
 # Set environment variables
@@ -72,8 +72,8 @@ RUN mkdir -p /ComfyUI/models/insightface/models/buffalo_l && \
     rm -rf /tmp/buffalo_l.zip
 
 # Download other models using get_models.sh
-# COPY src/get_models.sh /get_models.sh
-# RUN /bin/bash /get_models.sh && rm /get_models.sh
+COPY src/get_models.sh /get_models.sh
+RUN /bin/bash /get_models.sh && rm /get_models.sh
 
 # Final setup
 CMD ["/start.sh"]
